@@ -4,7 +4,7 @@ import App from './App';
 if (typeof window !== 'undefined') {
   // Web: load Skia WASM before rendering
   const { LoadSkiaWeb } = require('@shopify/react-native-skia/lib/commonjs/web');
-  LoadSkiaWeb({ locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/canvaskit-wasm@0.39.1/bin/full/${file}` })
+  LoadSkiaWeb({ locateFile: (file: string) => `/Evolution/${file}` })
     .then(() => {
       registerRootComponent(App);
     })
