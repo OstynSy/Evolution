@@ -1,8 +1,17 @@
 import { registerRootComponent } from 'expo';
-
 import App from './App';
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+if (typeof window !== 'undefined') {
+  // Web: load Skia WASM before rendering
+  const { LoadSkiaWeb } = require('@shopify/react-native-skia/lib/commonjs/web');
+  LoadSkiaWeb({ locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/canvaskit-wasm@0.39.1/bin/full/${file}` })
+    .then(() => {
+      registerRootComponent(App);
+    })
+    .catch((err: unknown) => {
+      console.error('Skia failed to load:', err);
+      registerRootComponent(App);
+    });
+} else {
+  registerRootComponent(App);
+}
